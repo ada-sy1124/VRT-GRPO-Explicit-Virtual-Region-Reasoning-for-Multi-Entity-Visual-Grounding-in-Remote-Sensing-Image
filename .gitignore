@@ -1,0 +1,32 @@
+# Ignore everything by default.
+/*
+/.*
+
+# Keep the repository control files that should stay visible.
+!/.gitignore
+!/[Rr][Ee][Aa][Dd][Mm][Ee]*
+!/requirements.txt
+
+# Keep only the project areas that should be updated.
+!/code/
+!/code/**
+!/deliverables/
+!/deliverables/**
+
+!/logbook/
+!/logbook/**
+!/title/
+!/title/**
+
+# Common local/generated files inside the allowed areas.
+**/.DS_Store
+**/__pycache__/
+**/*.py[cod]
+**/.ipynb_checkpoints/
+**/*.tmp
+**/*.log
+**/wandb/
+**/runs/
+**/output/
+**/outputs/
+**/checkpoint-*/

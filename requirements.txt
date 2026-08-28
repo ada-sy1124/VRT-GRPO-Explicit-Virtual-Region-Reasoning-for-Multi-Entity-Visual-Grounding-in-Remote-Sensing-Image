@@ -1,0 +1,16 @@
+accelerate
+bitsandbytes
+datasets
+huggingface_hub
+ijson
+opencv-python
+peft
+pillow
+qwen-vl-utils
+requests
+torch
+torchvision
+tqdm
+transformers>=4.52.1
+trl
+wandb
