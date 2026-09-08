@@ -613,13 +613,13 @@ $$R_{\mathrm{fmt}}(y_i) = F(\hat{t}_i,\hat{a}_i),$$
 $$R_{\mathrm{ent}}(y_i) = G(\hat{s}_i,s_i^\ast) + G(\hat{o}_i,o_i^\ast),$$
 
 
-其中 $s_i^\ast$ 和 $o_i^\ast$ 分别是真实 subject 与 reference object boxes，$G(\cdot)$ 表示基于 IoU 的实体定位奖励。
+其中 $s_i^\ast$ 和 $o_i^\ast$ 分别是真实 subject 与 reference object boxes， $G(\cdot)$ 表示基于 IoU 的实体定位奖励。
 
 
 $$R_{\mathrm{reg}}(y_i) = H(\hat{r}_i,r_i^\ast,s_i^\ast),$$
 
 
-其中 $r_i^\ast$ 是伪标注 virtual region，$H(\cdot)$ 用于衡量预测 region 与伪标注 region 的一致性，以及该 region 对 subject 的覆盖情况。
+其中 $r_i^\ast$ 是伪标注 virtual region， $H(\cdot)$ 用于衡量预测 region 与伪标注 region 的一致性，以及该 region 对 subject 的覆盖情况。
 
 
 $$R_{\mathrm{spa}}(y_i) = D(\hat{r}_i,o_i^\ast,s_i^\ast,q_i),$$
