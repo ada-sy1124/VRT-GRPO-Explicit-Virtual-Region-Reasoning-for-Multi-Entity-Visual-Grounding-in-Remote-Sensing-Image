@@ -579,91 +579,62 @@ Large model checkpoints, LoRA adapters, generated datasets, and prediction files
 
 
 
+这里是为你转换好的 Markdown 格式，使用了标准的 `$` (单行公式) 和 `$$` (独立公式块) 语法。你可以直接将其复制并粘贴到你的 Markdown 文件中，所有公式都能被绝大多数 Markdown 编辑器（如 Typora, Obsidian 等）完美渲染：
 
-
-
-
-
+---
 
 设模型对第 $i$ 个样本生成的 rollout 为 $y_i$，其中包含
 
-$$
-y_i = \left\{\hat{p}_i,\hat{o}_i,\hat{r}_i,\hat{s}_i,\hat{a}_i\right\},
-$$
+
+$$y_i=\{\hat{p}_i,\hat{o}_i,\hat{r}_i,\hat{s}_i,\hat{a}_i\},$$
+
 
 分别表示生成的 plan、reference object boxes、virtual region、subject box 和 answer。总体奖励为：
 
-$$
-R(y_i)
-=
-\lambda_{\mathrm{plan}}R_{\mathrm{plan}}(y_i)
-+\lambda_{\mathrm{fmt}}R_{\mathrm{fmt}}(y_i)
-+\lambda_{\mathrm{ent}}R_{\mathrm{ent}}(y_i)
-+\lambda_{\mathrm{reg}}R_{\mathrm{reg}}(y_i)
-+\lambda_{\mathrm{spa}}R_{\mathrm{spa}}(y_i).
-$$
+
+$$R(y_i)= \lambda_{\mathrm{plan}}R_{\mathrm{plan}}(y_i) +\lambda_{\mathrm{fmt}}R_{\mathrm{fmt}}(y_i) +\lambda_{\mathrm{ent}}R_{\mathrm{ent}}(y_i) +\lambda_{\mathrm{reg}}R_{\mathrm{reg}}(y_i) +\lambda_{\mathrm{spa}}R_{\mathrm{spa}}(y_i).$$
+
 
 其中五个子奖励可概括为：
 
-$$
-R_{\mathrm{plan}}(y_i)
-=
-J\left(\hat{p}_i,q_i,\hat{t}_i\right),
-$$
+
+$$R_{\mathrm{plan}}(y_i) = J(\hat{p}_i, q_i, \hat{t}_i),$$
+
 
 其中 $J(\cdot)$ 表示冻结 judgment model，用于评价 plan 是否覆盖 query 中的关键约束，以及后续推理轨迹 $\hat{t}_i$ 是否与 plan 一致。
 
-$$
-R_{\mathrm{fmt}}(y_i)
-=
-F\left(\hat{t}_i,\hat{a}_i\right),
-$$
 
-其中 $F(\cdot)$ 表示格式检查函数，用于评价输出是否满足 plan-think-answer 结构，以及 $\hat{t}_i$ 与 $\hat{a}_i$ 中的 object、region、subject 是否一致。
+$$R_{\mathrm{fmt}}(y_i) = F(\hat{t}_i,\hat{a}_i),$$
 
-$$
-R_{\mathrm{ent}}(y_i)
-=
-G\left(\hat{s}_i,s_i^\ast\right)
-+
-G\left(\hat{o}_i,o_i^\ast\right),
-$$
+
+其中 $F(\cdot)$ 表示格式检查函数，用于评价输出是否满足 plan-think-answer 结构，以及 `<think>` 与 `<answer>` 中的 object、region、subject 是否一致。
+
+
+$$R_{\mathrm{ent}}(y_i) = G(\hat{s}_i,s_i^\ast) + G(\hat{o}_i,o_i^\ast),$$
+
 
 其中 $s_i^\ast$ 和 $o_i^\ast$ 分别是真实 subject 与 reference object boxes，$G(\cdot)$ 表示基于 IoU 的实体定位奖励。
 
-$$
-R_{\mathrm{reg}}(y_i)
-=
-H\left(\hat{r}_i,r_i^\ast,s_i^\ast\right),
-$$
+
+$$R_{\mathrm{reg}}(y_i) = H(\hat{r}_i,r_i^\ast,s_i^\ast),$$
+
 
 其中 $r_i^\ast$ 是伪标注 virtual region，$H(\cdot)$ 用于衡量预测 region 与伪标注 region 的一致性，以及该 region 对 subject 的覆盖情况。
 
-$$
-R_{\mathrm{spa}}(y_i)
-=
-D\left(\hat{r}_i,o_i^\ast,s_i^\ast,q_i\right),
-$$
+
+$$R_{\mathrm{spa}}(y_i) = D(\hat{r}_i,o_i^\ast,s_i^\ast,q_i),$$
+
 
 其中 $D(\cdot)$ 表示空间关系一致性函数，用于判断预测 region 是否位于 reference object 指向 subject 的合理方向上，并与 query 中的空间关系保持一致。
-
 最终，GRPO 使用同一 query-image pair 下多个 rollouts 的奖励计算相对优势：
 
-$$
-A_i^k
-=
-\frac{
-R\left(y_i^k\right)
--
-\operatorname{mean}_{j=1}^{K}R\left(y_i^j\right)
-}{
-\operatorname{std}_{j=1}^{K}R\left(y_i^j\right)
-+
-\epsilon
-},
-$$
+
+$$A_i^k = \frac{R(y_i^k)-\mathrm{mean}_{j=1}^{K}R(y_i^j)} {\mathrm{std}_{j=1}^{K}R(y_i^j)+\epsilon},$$
+
 
 其中 $K$ 表示每个输入采样得到的 rollout 数量。该优势函数用于鼓励高质量 VRT 轨迹，并抑制低质量轨迹。
+
+
 
 
 
