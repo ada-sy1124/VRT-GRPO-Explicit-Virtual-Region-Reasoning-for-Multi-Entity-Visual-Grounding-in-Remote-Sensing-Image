@@ -579,10 +579,6 @@ Large model checkpoints, LoRA adapters, generated datasets, and prediction files
 
 
 
-这里是为你转换好的 Markdown 格式，使用了标准的 `$` (单行公式) 和 `$$` (独立公式块) 语法。你可以直接将其复制并粘贴到你的 Markdown 文件中，所有公式都能被绝大多数 Markdown 编辑器（如 Typora, Obsidian 等）完美渲染：
-
----
-
 设模型对第 $i$ 个样本生成的 rollout 为 $y_i$，其中包含
 
 
